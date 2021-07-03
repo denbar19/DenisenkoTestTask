@@ -253,5 +253,19 @@ public class BalanceBracketsTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    @Order(19)
+    public void CorrectStringTextTest() {
+        String expected = "BALANCED\n";
+        String str = "(This {Test} to [check] (text) !)";
+        try {
+            balanceBrackets.verify(str);
+        } catch (IllegalArgumentException e) {
+            e.getMessage();
+        }
+        String actual = outputStreamCapture.toString();
+        assertEquals(expected, actual);
+    }
+
 
 }
