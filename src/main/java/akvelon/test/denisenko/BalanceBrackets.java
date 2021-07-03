@@ -5,6 +5,16 @@ import java.util.Deque;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Class have method verify() that allows to check whether is given string correct with brackets.
+ * Works with this types( (), {}, [] ).
+ * ‘()’, ‘{}’, ‘[]’ - balanced, open and closed brackets exist.
+ * ‘(}’ - not balanced, open and closed brackets has different type.
+ * ‘((())’ - not balanced, number of open brackets does not equal to the number of closing ones.
+ *
+ * @author Denisenko Stas
+ * @version 1.0
+ */
 public class BalanceBrackets implements BalanceVerificator {
 
     // order in strings must be respective for each type of brackets
@@ -59,6 +69,15 @@ public class BalanceBrackets implements BalanceVerificator {
         return CLOSE_BRACKETS.indexOf(ch) != -1;
     }
 
+    /**
+     * Method finds pair of brackets (nested or not).
+     * if not balanced saves index of unmatched bracket in notBalancedBracketIndex.
+     * String should contain brackets. --> prints message.
+     *
+     * @return whether the expression is valid
+     * @throws IllegalArgumentException
+     *  String should not contain illegal symbols ( before first and after last bracket)
+     */
     private boolean checkBracketsIsBalanced() throws IllegalArgumentException {
         Deque<Character> stack = new ArrayDeque<>();
         for (int i = 1; i <= toVerify.length(); i++) {
@@ -80,7 +99,10 @@ public class BalanceBrackets implements BalanceVerificator {
             }
             /*
               compare open bracket from the stack and close bracket
-              if
+              if they doesn't match then
+              search for every open type of bracket in the stack
+              if present then error in previous bracket (i - 1)
+              if no then error in itself (i)
              */
             if (OPEN_BRACKETS.indexOf(bracket) != CLOSE_BRACKETS.indexOf(charToCheck)) {
                 for (char chr : OPEN_BRACKETS.toCharArray()) {
@@ -144,6 +166,7 @@ public class BalanceBrackets implements BalanceVerificator {
             bb.verify("([])}"); // 5
             bb.verify("}[])}"); // 1
             bb.verify("{)])}"); // 2
+            bb.verify(")("); // 1
 
             bb.verify("asdf");
             bb.verify("(asdf)");
